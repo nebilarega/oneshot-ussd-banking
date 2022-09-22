@@ -13,9 +13,13 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 public class ForegroundService extends Service {
+    ForeGroundWindow window;
     public ForegroundService() {
     }
-
+    private static ForeGroundWindow futureWindow;
+    public static ForeGroundWindow getWindow(){
+        return futureWindow;
+    }
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
@@ -33,8 +37,10 @@ public class ForegroundService extends Service {
 
         // create an instance of com.example.myapplication.ForegroundService.Window class
         // and display the content on screen
-        Window window = new Window(this);
+        this.window = new ForeGroundWindow(this);
+        futureWindow = this.window;
         window.open();
+
     }
 
     @Override

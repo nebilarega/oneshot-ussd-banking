@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-public class Window {
+public class ForeGroundWindow {
 
     // declaring required variables
     private Context context;
@@ -21,7 +21,7 @@ public class Window {
     private WindowManager mWindowManager;
     private LayoutInflater layoutInflater;
 
-    public Window(Context context){
+    public ForeGroundWindow(Context context){
         this.context = context;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // set the layout parameters of the window

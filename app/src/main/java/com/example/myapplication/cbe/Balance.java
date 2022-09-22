@@ -3,6 +3,7 @@ package com.example.myapplication.cbe;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.myapplication.ForeGroundWindow;
 import com.romellfudi.ussdlibrary.USSDApi;
 import com.romellfudi.ussdlibrary.USSDController;
 
@@ -12,10 +13,11 @@ import java.util.HashSet;
 
 public class Balance {
     Context context;
+    ForeGroundWindow window;
     String resMessage = "";
-
-    public Balance(Context context) {
+    public Balance(Context context, ForeGroundWindow window) {
         this.context = context;
+        this.window = window;
     }
 
     public String getBalance() {
@@ -64,6 +66,8 @@ public class Balance {
             @Override
             public void over(String message) {
                 resMessage = message;
+                if (window != null)
+                    window.close();
                 Log.println(Integer.valueOf(1), "USSD Response", "message");
             }
         });

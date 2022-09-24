@@ -8,7 +8,7 @@ So how can we bypass this restriction?
 2. Second step will be overlay splash screen to hide background processes.
 
 # Libraries used
-`https://github.com/romellfudi/VoIpUSSD`
+[USSDApi library](https://github.com/romellfudi/VoIpUSSD)
 
 ## Permission Handling
 * <b>Permission dependecy</b>

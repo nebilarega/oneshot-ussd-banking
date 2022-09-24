@@ -15,11 +15,20 @@ public class Balance {
     Context context;
     ForeGroundWindow window;
     String resMessage = "";
+    boolean isAccessibilityGiven = false;
     public Balance(Context context, ForeGroundWindow window) {
         this.context = context;
         this.window = window;
     }
-
+    public boolean getAccessibilityGiven(){
+        return isAccessibilityGiven;
+    }
+    public void setAccessibilityGiven(boolean isAccessibilityGiven){
+        this.isAccessibilityGiven = isAccessibilityGiven;
+    }
+    public void verifyAccessibility(){
+        setAccessibilityGiven(USSDController.verifyAccesibilityAccess(context));
+    }
     public String getBalance() {
         HashMap<String, HashSet<String>> map = new HashMap<>();
         map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
@@ -52,7 +61,6 @@ public class Balance {
                                             public void responseMessage(String message) {
                                                 Log.println(Log.DEBUG, "ussd-result", message);
                                                 resMessage = message;
-                                                ussdApi.cancel();
                                             }
                                         });
                                     }

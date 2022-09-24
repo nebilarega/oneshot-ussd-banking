@@ -21,25 +21,29 @@ public class MainActivity extends AppCompatActivity {
         balanceCard = findViewById(R.id.balance);
         PermissionHandler permissionHandler = new PermissionHandler(MainActivity.this);
         permissionHandler.handlePermissions();
-        if (permissionHandler.hasOverlayPermission()){
+        if (permissionHandler.hasOverlayPermission()) {
             Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
             startActivity(myIntent);
         }
         balanceCard.setOnClickListener(view -> {
-            startForeGroundService();
             Balance newBalance = new Balance(this, ForegroundService.getWindow());
-            String message = newBalance.getBalance();
-            TextView textView = findViewById(R.id.bankInfo);
-            textView.setText(message);
+            newBalance.verifyAccessibility();
+            boolean isAccessible = newBalance.getAccessibilityGiven();
+            if (isAccessible) {
+                startForeGroundService();
+                String message = newBalance.getBalance();
+                TextView textView = findViewById(R.id.bankInfo);
+                textView.setText(message);
+            }
         });
     }
-    public void startForeGroundService(){
-        if(Settings.canDrawOverlays(this)) {
+
+    public void startForeGroundService() {
+        if (Settings.canDrawOverlays(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(new Intent(this, ForegroundService.class));
             } else {
                 startService(new Intent(this, ForegroundService.class));
-
             }
         }
     }

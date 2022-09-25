@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity(myIntent);
         }
         balanceCard.setOnClickListener(view -> {
+            // todo: Implement multiple clicks after the foreground is running
+
             Balance newBalance = new Balance(this, ForegroundService.getWindow());
             newBalance.verifyAccessibility();
             boolean isAccessible = newBalance.getAccessibilityGiven();

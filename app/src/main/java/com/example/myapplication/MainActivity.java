@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,16 +27,22 @@ public class MainActivity extends AppCompatActivity {
             startActivity(myIntent);
         }
         balanceCard.setOnClickListener(view -> {
-            // todo: Implement multiple clicks after the foreground is running
 
             Balance newBalance = new Balance(this, ForegroundService.getWindow());
             newBalance.verifyAccessibility();
             boolean isAccessible = newBalance.getAccessibilityGiven();
             if (isAccessible) {
                 startForeGroundService();
-                String message = newBalance.getBalance();
+                newBalance.getBalance();
+                String message = newBalance.getResMessage();
                 TextView textView = findViewById(R.id.bankInfo);
+//                Log.println(Log.DEBUG, "Output", message);
+                if (message != "") {
+                    Log.println(Log.DEBUG, "Output", message);
+                    stopForegroundService();
+                }
                 textView.setText(message);
+//                stopForegroundService();
             }
         });
     }
@@ -47,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 startService(new Intent(this, ForegroundService.class));
             }
+        }
+    }
+
+    public void stopForegroundService() {
+        if (Settings.canDrawOverlays(this)) {
+            stopService(new Intent(this, ForegroundService.class));
         }
     }
 }

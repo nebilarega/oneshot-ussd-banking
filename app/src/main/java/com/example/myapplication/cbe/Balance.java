@@ -1,7 +1,6 @@
 package com.example.myapplication.cbe;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.myapplication.ForeGroundWindow;
 import com.romellfudi.ussdlibrary.USSDApi;
@@ -20,6 +19,15 @@ public class Balance {
         this.context = context;
         this.window = window;
     }
+
+    public void setResMessage(String resMessage) {
+        this.resMessage = resMessage;
+    }
+
+    public String getResMessage() {
+        return resMessage;
+    }
+
     public boolean getAccessibilityGiven(){
         return isAccessibilityGiven;
     }
@@ -34,33 +42,29 @@ public class Balance {
         map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
         map.put("KEY_ERROR", new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
         USSDApi ussdApi = USSDController.getInstance(context);
-        ussdApi.callUSSDInvoke("*889#", map, new USSDController.CallbackInvoke() {
+        ussdApi.callUSSDInvoke("*999#", map, new USSDController.CallbackInvoke() {
             @Override
             public void responseInvoke(String message) {
                 // message has the response string data
-                resMessage = message;
+                setResMessage(message);
                 String dataToSend = "1"; // <- send "data" into USSD's input text
                 ussdApi.send(dataToSend, new USSDController.CallbackMessage() {
                     @Override
                     public void responseMessage(String message) {
                         // message has the response string data from USSD
-                        Log.println(Log.DEBUG, "ussd-result", message);
-                        resMessage = message;
-                        ussdApi.send("2288", new USSDController.CallbackMessage() {
+                        setResMessage(message);
+                        ussdApi.send("1", new USSDController.CallbackMessage() {
                             @Override
                             public void responseMessage(String message) {
-                                Log.println(Log.DEBUG, "ussd-result", message);
-                                resMessage = message;
+                                setResMessage(message);
                                 ussdApi.send("1", new USSDController.CallbackMessage() {
                                     @Override
                                     public void responseMessage(String message) {
-                                        Log.println(Log.DEBUG, "ussd-result", message);
-                                        resMessage = message;
+                                       setResMessage(message);
                                         ussdApi.send("1", new USSDController.CallbackMessage() {
                                             @Override
                                             public void responseMessage(String message) {
-                                                Log.println(Log.DEBUG, "ussd-result", message);
-                                                resMessage = message;
+                                                setResMessage(message);
                                             }
                                         });
                                     }
@@ -73,10 +77,11 @@ public class Balance {
 
             @Override
             public void over(String message) {
-                resMessage = message;
+                setResMessage(message);
                 if (window != null)
                     window.close();
-                Log.println(Integer.valueOf(1), "USSD Response", "message");
+                ussdApi.cancel();
+
             }
         });
         return resMessage;

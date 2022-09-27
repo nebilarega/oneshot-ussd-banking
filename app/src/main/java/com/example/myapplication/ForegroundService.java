@@ -14,12 +14,16 @@ import androidx.core.app.NotificationCompat;
 
 public class ForegroundService extends Service {
     ForeGroundWindow window;
+
     public ForegroundService() {
     }
+
     private static ForeGroundWindow futureWindow;
-    public static ForeGroundWindow getWindow(){
+
+    public static ForeGroundWindow getWindow() {
         return futureWindow;
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
@@ -33,14 +37,13 @@ public class ForegroundService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startMyOwnForeground();
         else
-            startForeground(1, new Notification());
+            startForeground(3, new Notification());
 
         // create an instance of com.example.myapplication.ForegroundService.Window class
         // and display the content on screen
         this.window = new ForeGroundWindow(this);
         futureWindow = this.window;
         window.open();
-
     }
 
     @Override
@@ -76,4 +79,15 @@ public class ForegroundService extends Service {
         startForeground(2, notification);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            this.window.close();
+        } catch (NullPointerException n) {
+
+        }
+        stopForeground(true);
+        stopSelf();
+    }
 }

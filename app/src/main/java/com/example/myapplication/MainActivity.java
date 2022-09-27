@@ -27,22 +27,20 @@ public class MainActivity extends AppCompatActivity {
             startActivity(myIntent);
         }
         balanceCard.setOnClickListener(view -> {
-
             Balance newBalance = new Balance(this, ForegroundService.getWindow());
             newBalance.verifyAccessibility();
             boolean isAccessible = newBalance.getAccessibilityGiven();
+            String message = "";
+            TextView textView = findViewById(R.id.bankInfo);
             if (isAccessible) {
                 startForeGroundService();
                 newBalance.getBalance();
-                String message = newBalance.getResMessage();
-                TextView textView = findViewById(R.id.bankInfo);
-//                Log.println(Log.DEBUG, "Output", message);
-                if (message != "") {
-                    Log.println(Log.DEBUG, "Output", message);
-                    stopForegroundService();
-                }
-                textView.setText(message);
+                message = newBalance.getResMessage();
 //                stopForegroundService();
+                Log.d("Output", message);
+            }
+            if (message != null && !message.equals("")){
+                textView.setText(message);
             }
         });
     }
@@ -62,4 +60,11 @@ public class MainActivity extends AppCompatActivity {
             stopService(new Intent(this, ForegroundService.class));
         }
     }
+
+    private Runnable setBalanceToView = new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    };
 }

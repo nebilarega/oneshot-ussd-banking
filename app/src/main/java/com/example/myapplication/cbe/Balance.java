@@ -1,6 +1,7 @@
 package com.example.myapplication.cbe;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.myapplication.ForeGroundWindow;
 import com.romellfudi.ussdlibrary.USSDApi;
@@ -48,22 +49,27 @@ public class Balance {
                 // message has the response string data
                 setResMessage(message);
                 String dataToSend = "1"; // <- send "data" into USSD's input text
+                Log.d("message1", message);
                 ussdApi.send(dataToSend, new USSDController.CallbackMessage() {
                     @Override
                     public void responseMessage(String message) {
                         // message has the response string data from USSD
                         setResMessage(message);
+                        Log.d("message2", message);
                         ussdApi.send("1", new USSDController.CallbackMessage() {
                             @Override
                             public void responseMessage(String message) {
                                 setResMessage(message);
+                                Log.d("message3", message);
                                 ussdApi.send("1", new USSDController.CallbackMessage() {
                                     @Override
                                     public void responseMessage(String message) {
                                        setResMessage(message);
+                                        Log.d("message4", message);
                                         ussdApi.send("1", new USSDController.CallbackMessage() {
                                             @Override
                                             public void responseMessage(String message) {
+                                                Log.d("message5", message);
                                                 setResMessage(message);
                                             }
                                         });
@@ -78,10 +84,10 @@ public class Balance {
             @Override
             public void over(String message) {
                 setResMessage(message);
+//                Log.d("message", getResMessage());
                 if (window != null)
                     window.close();
                 ussdApi.cancel();
-
             }
         });
         return resMessage;

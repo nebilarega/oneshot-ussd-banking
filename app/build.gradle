@@ -6,7 +6,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.myapplication"
+        applicationId "com.example.oneshot_ussd"
         minSdk 26
         targetSdk 34
         versionCode 1

@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.oneshot_ussd;
 
 import android.content.Intent;
 import android.os.Build;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.example.myapplication.cbe.Balance;
+import com.example.oneshot_ussd.cbe.Balance;
 
 public class MainActivity extends AppCompatActivity {
     CardView balanceCard;

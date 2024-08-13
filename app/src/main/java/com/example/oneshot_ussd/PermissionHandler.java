@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.oneshot_ussd;
 
 import android.Manifest;
 import android.app.Activity;

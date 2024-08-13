@@ -1,9 +1,9 @@
-package com.example.myapplication.cbe;
+package com.example.oneshot_ussd.cbe;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.example.myapplication.ForeGroundWindow;
+import com.example.oneshot_ussd.ForeGroundWindow;
 import com.romellfudi.ussdlibrary.USSDApi;
 import com.romellfudi.ussdlibrary.USSDController;
 

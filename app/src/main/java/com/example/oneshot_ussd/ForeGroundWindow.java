@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.oneshot_ussd;
 
 import static android.content.Context.WINDOW_SERVICE;
 

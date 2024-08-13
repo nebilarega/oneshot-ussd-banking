@@ -21,7 +21,7 @@ public class ForeGroundWindow {
     private WindowManager mWindowManager;
     private LayoutInflater layoutInflater;
 
-    public ForeGroundWindow(Context context){
+    public ForeGroundWindow(Context context) {
         this.context = context;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // set the layout parameters of the window
@@ -52,7 +52,7 @@ public class ForeGroundWindow {
         // Define the position of the
         // window within the screen
         mParams.gravity = Gravity.BOTTOM;
-        mWindowManager = (WindowManager)context.getSystemService(WINDOW_SERVICE);
+        mWindowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
     }
 
     public void open() {
@@ -60,29 +60,30 @@ public class ForeGroundWindow {
         try {
             // check if the view is already
             // inflated or present in the window
-            if(mView.getWindowToken()==null) {
-                if(mView.getParent()==null) {
+            if (mView.getWindowToken() == null) {
+                if (mView.getParent() == null) {
                     mWindowManager.addView(mView, mParams);
                 }
             }
         } catch (Exception e) {
-            Log.d("Error1",e.toString());
+            Log.d("Error1", e.toString());
         }
     }
+
     public void close() {
 
         try {
             // remove the view from the window
-            ((WindowManager)context.getSystemService(WINDOW_SERVICE)).removeView(mView);
+            ((WindowManager) context.getSystemService(WINDOW_SERVICE)).removeView(mView);
             // invalidate the view
             mView.invalidate();
             // remove all views
-            ((ViewGroup)mView.getParent()).removeAllViews();
+            ((ViewGroup) mView.getParent()).removeAllViews();
 
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
         } catch (Exception e) {
-            Log.d("Error2",e.toString());
+            Log.d("Error2", e.toString());
         }
     }
 }

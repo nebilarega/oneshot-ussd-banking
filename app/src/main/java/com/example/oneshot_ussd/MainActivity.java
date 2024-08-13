@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         balanceCard = findViewById(R.id.balance);
         AccessibilityUtils accessibilityUtils = new AccessibilityUtils(this);
-        boolean isAccessibilityServiceAvailable = accessibilityUtils.checkAccessibilityService();
+        accessibilityUtils.checkAccessibilityService();
         PermissionHandler permissionHandler = new PermissionHandler(MainActivity.this);
         permissionHandler.handlePermissions();
         if (permissionHandler.hasOverlayPermission()) {

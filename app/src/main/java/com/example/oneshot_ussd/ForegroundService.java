@@ -43,7 +43,7 @@ public class ForegroundService extends Service {
         // and display the content on screen
         this.window = new ForeGroundWindow(this);
         futureWindow = this.window;
-        window.open();
+        this.window.open();
     }
 
     @Override

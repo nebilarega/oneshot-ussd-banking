@@ -43,6 +43,11 @@ public class Balance {
         map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
         map.put("KEY_ERROR", new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
         USSDApi ussdApi = USSDController.getInstance(context);
+
+        // check if window is running if not open window
+        if (window != null){
+            window.open();
+        }
         ussdApi.callUSSDInvoke("*999#", map, new USSDController.CallbackInvoke() {
             @Override
             public void responseInvoke(String message) {

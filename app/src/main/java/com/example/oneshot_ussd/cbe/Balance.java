@@ -1,9 +1,13 @@
 package com.example.oneshot_ussd.cbe;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.example.oneshot_ussd.ForeGroundWindow;
+import com.example.oneshot_ussd.ForegroundService;
 import com.romellfudi.ussdlibrary.USSDApi;
 import com.romellfudi.ussdlibrary.USSDController;
 
@@ -16,9 +20,10 @@ public class Balance {
     ForeGroundWindow window;
     String resMessage = "";
     boolean isAccessibilityGiven = false;
-    public Balance(Context context, ForeGroundWindow window) {
+    public Balance(Context context) {
+        startForeGroundService(context);
         this.context = context;
-        this.window = window;
+        this.window = ForegroundService.getWindow();
     }
 
     public void setResMessage(String resMessage) {
@@ -46,6 +51,11 @@ public class Balance {
 
         // check if window is running if not open window
         if (window != null){
+            Log.d("USSDRequest", "Window Is not Null");
+            window.open();
+        }
+        else{
+            Log.d("USSDRequest", "Top Window Is not Null");
             window.open();
         }
         ussdApi.callUSSDInvoke("*999#", map, new USSDController.CallbackInvoke() {
@@ -79,9 +89,6 @@ public class Balance {
                                                 ussdApi.send("1", new USSDController.CallbackMessage(){
                                                     @Override
                                                     public void responseMessage(String message) {
-                                                        if (window != null){
-                                                            window.close();
-                                                        }
                                                     }
                                                 });
                                             }
@@ -97,12 +104,28 @@ public class Balance {
             @Override
             public void over(String message) {
                 setResMessage(message);
-                Log.d("USSDRequest", getResMessage());
-                if (window != null)
+
+                if (window != null){
+                    Log.d("USSDRequest", getResMessage());
                     window.close();
+                }
+                else{
+                    Log.d("USSDRequest", "Window Is Null");
+                }
+
                 ussdApi.cancel();
             }
         });
         return resMessage;
+    }
+
+    public void startForeGroundService(Context context) {
+        if (Settings.canDrawOverlays(context)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(new Intent(context, ForegroundService.class));
+            } else {
+                context.startService(new Intent(context, ForegroundService.class));
+            }
+        }
     }
 }

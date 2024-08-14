@@ -30,13 +30,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(myIntent);
         }
         balanceCard.setOnClickListener(view -> {
-            Balance newBalance = new Balance(this, ForegroundService.getWindow());
+            Balance newBalance = new Balance(this);
             newBalance.verifyAccessibility();
             boolean isAccessible = newBalance.getAccessibilityGiven();
             String message = "";
             TextView textView = findViewById(R.id.bankInfo);
             if (isAccessible) {
-                startForeGroundService();
+//                startForeGroundService();
                 newBalance.getBalance();
                 message = newBalance.getResMessage();
 //                stopForegroundService();

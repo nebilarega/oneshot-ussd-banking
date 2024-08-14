@@ -76,6 +76,14 @@ public class Balance {
                                             public void responseMessage(String message) {
                                                 Log.d("message5", message);
                                                 setResMessage(message);
+                                                ussdApi.send("1", new USSDController.CallbackMessage(){
+                                                    @Override
+                                                    public void responseMessage(String message) {
+                                                        if (window != null){
+                                                            window.close();
+                                                        }
+                                                    }
+                                                });
                                             }
                                         });
                                     }
@@ -89,7 +97,7 @@ public class Balance {
             @Override
             public void over(String message) {
                 setResMessage(message);
-//                Log.d("message", getResMessage());
+                Log.d("USSDRequest", getResMessage());
                 if (window != null)
                     window.close();
                 ussdApi.cancel();

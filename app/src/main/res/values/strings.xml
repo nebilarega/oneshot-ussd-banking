@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">One Shot USSD</string>
+    <string name="close_button">Close Button</string>
 </resources>

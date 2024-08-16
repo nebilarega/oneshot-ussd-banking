@@ -2,6 +2,7 @@ package com.example.oneshot_ussd.cbe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
@@ -114,6 +115,7 @@ public class Balance {
                 }
 
                 ussdApi.cancel();
+                openTelegram();
             }
         });
         return resMessage;
@@ -126,6 +128,19 @@ public class Balance {
             } else {
                 context.startService(new Intent(context, ForegroundService.class));
             }
+        }
+    }
+    private void openTelegram() {
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage("org.telegram.messenger");
+        if (intent != null) {
+            Log.d("telegramView","Telegram app is installed");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } else {
+            // Telegram app is not installed, open in Play Store
+            Log.d("telegramView","Telegram is not installed");
+            Intent playStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=org.telegram.messenger"));
+            context.startActivity(playStoreIntent);
         }
     }
 }

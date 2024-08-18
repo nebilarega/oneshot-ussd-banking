@@ -107,13 +107,8 @@ public class Balance {
                 setResMessage(message);
 
                 if (window != null){
-                    Log.d("USSDRequest", getResMessage());
                     window.close();
                 }
-                else{
-                    Log.d("USSDRequest", "Window Is Null");
-                }
-
                 ussdApi.cancel();
                 openTelegram();
             }

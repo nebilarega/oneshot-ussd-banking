@@ -36,10 +36,8 @@ public class MainActivity extends AppCompatActivity {
             String message = "";
             TextView textView = findViewById(R.id.bankInfo);
             if (isAccessible) {
-//                startForeGroundService();
                 newBalance.getBalance();
                 message = newBalance.getResMessage();
-//                stopForegroundService();
                 Log.d("Output", message);
             }
             if (message != null && !message.equals("")){
@@ -63,11 +61,4 @@ public class MainActivity extends AppCompatActivity {
             stopService(new Intent(this, ForegroundService.class));
         }
     }
-
-    private Runnable setBalanceToView = new Runnable() {
-        @Override
-        public void run() {
-
-        }
-    };
 }

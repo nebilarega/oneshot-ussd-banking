@@ -16,13 +16,31 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
+
+class Accessible {
+    // Private field
+    private boolean isAccessible;
+
+    // Getter method for isAccessible
+    public boolean isAccessible() {
+        return isAccessible;
+    }
+
+    // Setter method for isAccessible
+    public void setAccessible(boolean isAccessible) {
+        this.isAccessible = isAccessible;
+    }
+}
+
 public class Balance {
     Context context;
     ForeGroundWindow window;
     String resMessage = "";
-    boolean isAccessibilityGiven = false;
+    Boolean isAccessibilityGiven = false;
+
+    Accessible accessible = new Accessible();
+
     public Balance(Context context) {
-        startForeGroundService(context);
         this.context = context;
         this.window = ForegroundService.getWindow();
     }
@@ -35,29 +53,30 @@ public class Balance {
         return resMessage;
     }
 
-    public boolean getAccessibilityGiven(){
-        return isAccessibilityGiven;
+    public boolean getAccessibilityGiven() {
+        return accessible.isAccessible();
     }
-    public void setAccessibilityGiven(boolean isAccessibilityGiven){
-        this.isAccessibilityGiven = isAccessibilityGiven;
+
+    public void setAccessibilityGiven(boolean isAccessibilityGiven) {
+        accessible.setAccessible(isAccessibilityGiven);
     }
-    public void verifyAccessibility(){
-        setAccessibilityGiven(USSDController.verifyAccesibilityAccess(context));
+
+    public boolean verifyAccessibility() {
+        return USSDController.verifyAccesibilityAccess(context);
     }
+
     public String getBalance() {
         HashMap<String, HashSet<String>> map = new HashMap<>();
         map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
         map.put("KEY_ERROR", new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
         USSDApi ussdApi = USSDController.getInstance(context);
-
+        startForeGroundService(context);
         // check if window is running if not open window
-        if (window != null){
+        if (window != null) {
             Log.d("USSDRequest", "Window Is not Null");
             window.open();
-        }
-        else{
-            Log.d("USSDRequest", "Top Window Is not Null");
-            window.open();
+        } else {
+            Log.d("USSDRequest", "Top Window Is Null");
         }
         ussdApi.callUSSDInvoke("*999#", map, new USSDController.CallbackInvoke() {
             @Override
@@ -80,14 +99,14 @@ public class Balance {
                                 ussdApi.send("1", new USSDController.CallbackMessage() {
                                     @Override
                                     public void responseMessage(String message) {
-                                       setResMessage(message);
+                                        setResMessage(message);
                                         Log.d("message4", message);
                                         ussdApi.send("1", new USSDController.CallbackMessage() {
                                             @Override
                                             public void responseMessage(String message) {
                                                 Log.d("message5", message);
                                                 setResMessage(message);
-                                                ussdApi.send("1", new USSDController.CallbackMessage(){
+                                                ussdApi.send("1", new USSDController.CallbackMessage() {
                                                     @Override
                                                     public void responseMessage(String message) {
                                                     }
@@ -106,7 +125,7 @@ public class Balance {
             public void over(String message) {
                 setResMessage(message);
 
-                if (window != null){
+                if (window != null) {
                     window.close();
                 }
                 ussdApi.cancel();
@@ -125,15 +144,16 @@ public class Balance {
             }
         }
     }
+
     private void openTelegram() {
         Intent intent = context.getPackageManager().getLaunchIntentForPackage("org.telegram.messenger");
         if (intent != null) {
-            Log.d("telegramView","Telegram app is installed");
+            Log.d("telegramView", "Telegram app is installed");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } else {
             // Telegram app is not installed, open in Play Store
-            Log.d("telegramView","Telegram is not installed");
+            Log.d("telegramView", "Telegram is not installed");
             Intent playStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=org.telegram.messenger"));
             context.startActivity(playStoreIntent);
         }

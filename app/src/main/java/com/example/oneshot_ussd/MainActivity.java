@@ -1,7 +1,6 @@
 package com.example.oneshot_ussd;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -12,8 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.example.oneshot_ussd.cbe.Balance;
+import com.romellfudi.ussdlibrary.USSDController;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PermissionResultCallback {
     CardView balanceCard;
 
     @Override
@@ -21,29 +21,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         balanceCard = findViewById(R.id.balance);
-        AccessibilityUtils accessibilityUtils = new AccessibilityUtils(this);
-        accessibilityUtils.checkAccessibilityService();
         PermissionHandler permissionHandler = new PermissionHandler(MainActivity.this);
-        permissionHandler.handlePermissions();
-        if (permissionHandler.hasOverlayPermission()) {
+        if (!permissionHandler.hasOverlayPermission()) {
             Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
             startActivity(myIntent);
+            permissionHandler.handlePermissions();
         }
         balanceCard.setOnClickListener(view -> {
             Balance newBalance = new Balance(this);
-            newBalance.verifyAccessibility();
-            boolean isAccessible = newBalance.getAccessibilityGiven();
+            boolean isAccessible  = newBalance.verifyAccessibility();
+            boolean permissions = permissionHandler.hasAllPermissions();
             String message = "";
-            TextView textView = findViewById(R.id.bankInfo);
-            if (isAccessible) {
+            Log.d("PermissionsHere", ""+isAccessible);
+            if (permissions && isAccessible) {
                 newBalance.getBalance();
                 message = newBalance.getResMessage();
                 Log.d("Output", message);
             }
-            if (message != null && !message.equals("")){
-                textView.setText(message);
-            }
         });
+    }
+
+    @Override
+    public void onSuccessfulPermissionResult() {
+        onSuccessfulPermissions();
+    }
+
+    public void onSuccessfulPermissions() {
+
     }
 
     public void startForeGroundService() {

@@ -90,21 +90,17 @@ public class Balance {
                     public void responseMessage(String message) {
                         // message has the response string data from USSD
                         setResMessage(message);
-                        Log.d("message2", message);
                         ussdApi.send("1", new USSDController.CallbackMessage() {
                             @Override
                             public void responseMessage(String message) {
                                 setResMessage(message);
-                                Log.d("message3", message);
                                 ussdApi.send("1", new USSDController.CallbackMessage() {
                                     @Override
                                     public void responseMessage(String message) {
                                         setResMessage(message);
-                                        Log.d("message4", message);
                                         ussdApi.send("1", new USSDController.CallbackMessage() {
                                             @Override
                                             public void responseMessage(String message) {
-                                                Log.d("message5", message);
                                                 setResMessage(message);
                                                 ussdApi.send("1", new USSDController.CallbackMessage() {
                                                     @Override

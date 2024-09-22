@@ -36,8 +36,6 @@ public class Balance {
     Context context;
     ForeGroundWindow window;
     String resMessage = "";
-    Boolean isAccessibilityGiven = false;
-
     Accessible accessible = new Accessible();
 
     public Balance(Context context) {
@@ -51,14 +49,6 @@ public class Balance {
 
     public String getResMessage() {
         return resMessage;
-    }
-
-    public boolean getAccessibilityGiven() {
-        return accessible.isAccessible();
-    }
-
-    public void setAccessibilityGiven(boolean isAccessibilityGiven) {
-        accessible.setAccessible(isAccessibilityGiven);
     }
 
     public boolean verifyAccessibility() {

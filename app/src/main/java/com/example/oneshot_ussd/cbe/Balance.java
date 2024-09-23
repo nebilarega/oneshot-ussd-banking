@@ -17,26 +17,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 
-class Accessible {
-    // Private field
-    private boolean isAccessible;
-
-    // Getter method for isAccessible
-    public boolean isAccessible() {
-        return isAccessible;
-    }
-
-    // Setter method for isAccessible
-    public void setAccessible(boolean isAccessible) {
-        this.isAccessible = isAccessible;
-    }
-}
-
 public class Balance {
     Context context;
     ForeGroundWindow window;
     String resMessage = "";
-    Accessible accessible = new Accessible();
 
     public Balance(Context context) {
         this.context = context;
